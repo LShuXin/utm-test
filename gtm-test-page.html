@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GTM 测试页面 — 交互按钮示例</title>
+  <!-- 在下面替换为你的 GTM 容器 ID（例如：GTM-XXXXXXX） -->
+  <!-- Google Tag Manager (noscript) 插入在 body 中，以下为占位示例 -->
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 24px; background:#f7f9fc; }
+    .card { background:white; border-radius:10px; padding:20px; max-width:760px; margin:0 auto; box-shadow:0 6px 18px rgba(20,30,60,0.06); }
+    h1 { margin:0 0 8px 0; font-size:20px; }
+    p { color:#48515a; }
+    .btn { display:inline-block; padding:10px 16px; border-radius:8px; border:0; cursor:pointer; font-weight:600; margin:6px; }
+    .btn-primary { background:#2563eb; color:white; }
+    .btn-ghost { background:transparent; border:1px solid #cbd5e1; }
+    .btn-danger { background:#ef4444; color:white; }
+    .log { background:#0f172a; color:#d1fae5; padding:12px; border-radius:8px; margin-top:12px; min-height:60px; font-family:monospace; font-size:13px; }
+    .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    label { display:block; margin-top:12px; }
+    input[type="text"]{ padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0; }
+  </style>
+</head>
+<body>
+  <!-- GTM 容器脚本（替换 GTM-XXXXX） -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-XXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} // 便于调试和示例
+  </script>
+  -->
+
+  <div class="card">
+    <h1>GTM 测试页面（含交互按钮）</h1>
+    <p>这是一个简单的静态页面示例。页面上的交互会把事件推送到 <code>dataLayer</code>（如果 GTM 已安装），方便用于 GTM 预览/调试。</p>
+
+    <div class="row" style="margin-top:12px;">
+      <button id="btnPurchase" class="btn btn-primary">模拟购买（purchase）</button>
+      <button id="btnSignup" class="btn btn-ghost">模拟注册（signup）</button>
+      <button id="btnError" class="btn btn-danger">模拟错误事件（error）</button>
+    </div>
+
+    <label>
+      商品 ID： <input id="inputProductId" type="text" value="SKU-12345" />
+    </label>
+
+    <label>
+      用户名： <input id="inputUser" type="text" value="test_user" />
+    </label>
+
+    <div style="margin-top:14px">
+      <button id="btnVirtualPage" class="btn btn-ghost">发送虚拟页面视图</button>
+    </div>
+
+    <div class="log" id="logArea">Console log — dataLayer 推送会在这里显示（便于离线测试）</div>
+  </div>
+
+  <script>
+    // 确保 dataLayer 存在（在未安装 GTM 时仍可本地调试）
+    window.dataLayer = window.dataLayer || [];
+
+    function pushToDataLayer(obj) {
+      window.dataLayer.push(obj);
+      // 同时把日志显示到页面，方便离线查看
+      const log = document.getElementById('logArea');
+      const time = new Date().toISOString();
+      log.innerText = time + '  PUSH -> ' + JSON.stringify(obj) + '\n' + log.innerText;
+      console.log('dataLayer.push:', obj);
+    }
+
+    document.getElementById('btnPurchase').addEventListener('click', function () {
+      const productId = document.getElementById('inputProductId').value;
+      pushToDataLayer({
+        event: 'purchase',
+        ecommerce: {
+          transaction_id: 'T-' + Date.now(),
+          value: Math.floor(Math.random() * 200) + 20,
+          currency: 'CNY',
+          items: [{ id: productId, name: '示例商品', quantity: 1, price: 99 }]
+        }
+      });
+    });
+
+    document.getElementById('btnSignup').addEventListener('click', function () {
+      const user = document.getElementById('inputUser').value;
+      pushToDataLayer({
+        event: 'signup',
+        user: { username: user, method: 'email' }
+      });
+    });
+
+    document.getElementById('btnError').addEventListener('click', function () {
+      pushToDataLayer({
+        event: 'custom_error',
+        error: { message: '演示错误：按钮触发', code: 500 }
+      });
+    });
+
+    document.getElementById('btnVirtualPage').addEventListener('click', function () {
+      pushToDataLayer({
+        event: 'virtual_pageview',
+        virtualPage: { path: '/promo/test', title: '促销测试页面' }
+      });
+    });
+
+    // 演示：监听 dataLayer 的变化（如果浏览器支持 Proxy）
+    try {
+      const original = window.dataLayer;
+      window.dataLayer = new Proxy(original, {
+        apply() { return Reflect.apply(...arguments); },
+        construct() { return Reflect.construct(...arguments); },
+        get(target, prop) {
+          return target[prop];
+        }
+      });
+    } catch (e) {
+      // 不影响功能，仅为兼容性示例
+    }
+
+    // 小提示：在 GTM 中你可以基于 event 字段创建触发器（Trigger）
+    // 例如：Trigger type = Custom Event, Event name = 'purchase' 或 'signup' 等
+  </script>
+
+  <!-- 在实际生产/测试中：把下面的 noscript GTM 片段放到 body 顶部（替换 GTM-XXXXX） -->
+  <!--
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  -->
+</body>
+</html>
