@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTM 链接展示页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .link-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+        .link-section h2 {
+            margin-top: 0;
+            color: #555;
+            font-size: 1.2em;
+        }
+        .utm-link {
+            word-break: break-all;
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .utm-link a {
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .utm-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 UTM 链接测试展示</h1>
+    <p>点击下方链接以测试 Google Analytics (GA4) 的 UTM 归因和跨域追踪功能。</p>
+    
+    <div class="link-section">
+        <h2>手动测试 UTM 链接</h2>
+        <div class="utm-link">
+            <a id="testLink" href="https://www.01bank.io/?utm_id=TEST_ID_Manual&utm_source=TEST_Source_Manual&utm_medium=TEST_Medium_Web&utm_campaign=TEST_Campaign_Q4_Check&utm_term=TEST_TERM_Manual&utm_content=TEST_Content_A">
+                https://www.01bank.io/?utm_id=TEST_ID_Manual&utm_source=TEST_Source_Manual&utm_medium=TEST_Medium_Web&utm_campaign=TEST_Campaign_Q4_Check&utm_term=TEST_TERM_Manual&utm_content=TEST_Content_A
+            </a>
+        </div>
+        
+        <p><strong>链接参数详情:</strong></p>
+        <ul>
+            <li>**utm_id:** <code>TEST_ID_Manual</code></li>
+            <li>**utm_source:** <code>TEST_Source_Manual</code></li>
+            <li>**utm_medium:** <code>TEST_Medium_Web</code></li>
+            <li>**utm_campaign:** <code>TEST_Campaign_Q4_Check</code></li>
+            <li>**utm_term:** <code>TEST_TERM_Manual</code></li>
+            <li>**utm_content:** <code>TEST_Content_A</code></li>
+        </ul>
+    </div>
+    
+    </div>
+
+</body>
+</html>
